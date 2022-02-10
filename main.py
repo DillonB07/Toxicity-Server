@@ -7,9 +7,9 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/api/<message>')
-def api_message(message: str = ''):
-    API_KEY = environ['PERSPECTIVE_KEY']
+@app.route("/api/<message>")
+def api_message(message: str = ""):
+    API_KEY = environ["PERSPECTIVE_KEY"]
 
     client = discovery.build(
         "commentanalyzer",
@@ -20,18 +20,20 @@ def api_message(message: str = ''):
     )
 
     analyze_request = {
-        'comment': { 'text': message },
-        'requestedAttributes': {'TOXICITY': {}}
+        "comment": {"text": message},
+        "requestedAttributes": {"TOXICITY": {}},
     }
-    
+
     response = client.comments().analyze(body=analyze_request).execute()
     print(json.dumps(response, indent=4))
-    
+
     return response.json()
 
-@app.route('/')
-@app.route('/<text>')
-def home(text: str = None):
-  return redirect('https://dillonb07.github.io/toxicity-checker')
 
-app.run(host='0.0.0.0', port=8080)
+@app.route("/")
+@app.route("/<text>")
+def home(text: str = None):
+    return redirect("https://dillonb07.github.io/toxicity-checker")
+
+
+app.run(host="0.0.0.0", port=8080)
